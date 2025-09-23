@@ -1,63 +1,66 @@
-import os
 import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-import subprocess
-import json
-import logging
-
-# Configurar logging básico
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+import os
+from pathlib import Path
 
 
-def run_tests_single_execution():
+def run_tests():
+    """Script principal de ejecución (para compatibilidad)"""
 
-    os.makedirs('reports', exist_ok=True)
-    os.makedirs('reports/html-reports', exist_ok=True)
+    # Agregar el directorio actual al path
+    sys.path.insert(0, str(Path.cwd()))
 
-    json_report_path = 'reports/behave-report.json'
+    print("🚀 EJECUTOR DE PRUEBAS SAP")
+    print("=" * 50)
+    print("1. Ejecutar módulo login")
+    print("2. Ejecutar todos los módulos")
+    print("3. Ver módulos disponibles")
+    print("4. Salir")
 
-    logger.info("🚀 Ejecutando pruebas y generando reporte")
-
-    # Paso 1: Ejecutar behave y generar JSON
     try:
-        logger.info("📋 Ejecutando pruebas behave...")
-        result = subprocess.run([
-            sys.executable, '-m', 'behave',
-            'features/sap_login.feature',
-            '--format', 'json.pretty',
-            '--outfile', json_report_path,
-            '--no-capture'
-        ], capture_output=True, text=True, timeout=300)
+        option = input("\nSeleccione opción (1-4): ").strip()
 
-        logger.info(f"✅ Behave finalizado. Código: {result.returncode}")
+        if option == "1":
+            from run_module import run_module
+            success = run_module("module_login")
+            return success
 
-    except Exception as e:
-        logger.error(f"❌ Error ejecutando behave: {e}")
-        return 1
+        elif option == "2":
+            from run_all_modules import run_all_modules
+            success = run_all_modules()
+            return success
 
-    # Paso 2: Generar reporte HTML
-    logger.info("📊 Generando reporte HTML...")
-    try:
-        from src.reporting.html_reporter import HTMLReporter
-        reporter = HTMLReporter()
-        html_report_path = reporter.generate_html_report(json_report_path)
+        elif option == "3":
+            print("\n📋 MÓDULOS DISPONIBLES:")
+            modules_dir = Path("modules")
+            for module in modules_dir.iterdir():
+                if module.is_dir() and module.name.startswith("module_"):
+                    # Verificar si tiene features
+                    features_dir = module / "features"
+                    has_features = features_dir.exists() and any(features_dir.glob("*.feature"))
+                    status = "✅" if has_features else "⚠️ "
+                    print(f"{status} {module.name}")
 
-        if html_report_path:
-            logger.info(f"✅ Reporte HTML generado: {html_report_path}")
+                    if has_features:
+                        for feature_file in features_dir.glob("*.feature"):
+                            print(f"   📄 {feature_file.name}")
+            return True
+
+        elif option == "4":
+            print("👋 Saliendo...")
+            return True
+
         else:
-            logger.error("❌ Error generando reporte HTML")
-            return 1
+            print("❌ Opción inválida")
+            return False
 
+    except KeyboardInterrupt:
+        print("\n👋 Ejecución cancelada por el usuario")
+        return False
     except Exception as e:
-        logger.error(f"❌ Error generando reporte: {e}")
-        return 1
-
-    return result.returncode
+        print(f"❌ Error: {e}")
+        return False
 
 
 if __name__ == "__main__":
-    exit_code = run_tests_single_execution()
-    sys.exit(exit_code)
+    success = run_tests()
+    sys.exit(0 if success else 1)
