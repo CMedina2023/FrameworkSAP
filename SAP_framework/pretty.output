@@ -1,9 +1,0 @@
-Feature: Login a SAP # modules/module_login/features/sap_login.feature:1
-  Como usuario autorizado
-  Quiero poder iniciar sesión en SAP
-  Para realizar mis operaciones diarias
-  Scenario: Login exitoso a SAP              # modules/module_login/features/sap_login.feature:6
-    Given que tengo las credenciales válidas # modules/module_login/steps/sap_steps.py:14
-    When inicio sesión en SAP                # modules/module_login/steps/sap_steps.py:39
-    Then debo tener acceso al sistema        # modules/module_login/steps/sap_steps.py:49
-
