@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reporte Consolidado SAP Automation</title>
+    <meta charset="UTF-8">
+    <style>
+        /* (Mantener el mismo estilo que en _generate_enhanced_html_content) */
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f8f9fa; }
+        .header { background: linear-gradient(135deg, #0078D7, #005A9E); color: white; padding: 30px; border-radius: 10px; margin-bottom: 20px; }
+        .summary { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .test-case { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 15px; }
+        .passed { border-left: 5px solid #28a745; }
+        .failed { border-left: 5px solid #dc3545; }
+        .skipped { border-left: 5px solid #ffc107; }
+        .status { font-weight: bold; float: right; padding: 5px 15px; border-radius: 20px; color: white; }
+        .status-PASSED { background: #28a745; }
+        .status-FAILED { background: #dc3545; }
+        .status-SKIPPED { background: #ffc107; }
+        .stats { display: flex; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
+        .stat-box { flex: 1; min-width: 120px; text-align: center; padding: 15px; border-radius: 10px; color: white; }
+        .stat-total { background: #0078D7; }
+        .stat-passed { background: #28a745; }
+        .stat-failed { background: #dc3545; }
+        .stat-skipped { background: #ffc107; }
+        .stat-duration { background: #6f42c1; }
+        .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-top: 10px; font-family: monospace; white-space: pre-wrap; }
+        .steps { margin-top: 15px; }
+        .step { padding: 12px; margin: 8px 0; border-left: 4px solid #ddd; border-radius: 5px; }
+        .step-passed { border-left-color: #28a745; background: #f8fff9; }
+        .step-failed { border-left-color: #dc3545; background: #fff5f5; }
+        .step-skipped { border-left-color: #ffc107; background: #fffef0; }
+        .step-name { font-weight: bold; font-size: 1.1em; }
+        .step-duration { float: right; color: #666; font-weight: bold; }
+        .step-keyword { color: #888; font-style: italic; }
+        .step-details { margin-top: 8px; font-size: 0.9em; }
+        .evidence { background: #e9ecef; padding: 10px; margin: 5px 0; border-radius: 5px; }
+        .collapsible { cursor: pointer; padding: 10px; background: #e9ecef; border: none; border-radius: 5px; width: 100%; text-align: left; font-weight: bold; }
+        .content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .timestamp { color: #666; font-size: 0.9em; margin-top: 5px; }
+        .tag { display: inline-block; background: #e9ecef; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; margin-right: 5px; }
+        .environment { background: #e7f1ff; padding: 15px; border-radius: 5px; margin: 10px 0; }
+        .module-summary { background: #f0f4f8; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Reporte Consolidado SAP Automation</h1>
+        <p>📅 Generado: 2025-09-23 13:12:27</p>
+        <p>⏱️ Duración total: <strong>0.0 segundos</strong></p>
+    </div>
+
+    <div class="summary">
+        <h2>📊 Métricas Consolidadas</h2>
+        <div class="stats">
+            <div class="stat-box stat-total">
+                <h3>Total Escenarios</h3>
+                <p style="font-size: 24px; margin: 5px 0;">1</p>
+            </div>
+            <div class="stat-box stat-passed">
+                <h3>✅ Aprobadas</h3>
+                <p style="font-size: 24px; margin: 5px 0;">1</p>
+            </div>
+            <div class="stat-box stat-failed">
+                <h3>❌ Falladas</h3>
+                <p style="font-size: 24px; margin: 5px 0;">0</p>
+            </div>
+            <div class="stat-box stat-skipped">
+                <h3>⏸️ Saltadas</h3>
+                <p style="font-size: 24px; margin: 5px 0;">0</p>
+            </div>
+            <div class="stat-box stat-duration">
+                <h3>⏱️ Promedio</h3>
+                <p style="font-size: 24px; margin: 5px 0;">0.0s</p>
+            </div>
+        </div>
+        <div class="module-summary">
+            <h3>📦 Resumen de Módulos</h3>
+            <p><strong>Total Módulos:</strong> 1</p>
+            <p><strong>Éxitos:</strong> 1</p>
+            <p><strong>Fallos:</strong> 0</p>
+            <p><strong>Tasa de Éxito:</strong> 100.0%</p>
+        </div>
+    </div>
+
+    <div class="environment">
+        <h3>🖥️ Información del Entorno</h3>
+        <p><strong>Plataforma:</strong> Windows-10-10.0.26100-SP0</p>
+        <p><strong>Python:</strong> 3.11.1</p>
+        <p><strong>Directorio:</strong> C:\Users\2554184\PycharmProjects\pythonProject\venv\Scripts\features\sap_framework</p>
+    </div>
+
+    <div class="test-cases">
+        <h2>📋 Detalle de Ejecución - Paso a Paso (Todos los Módulos)</h2>
+        
+            <div class="test-case passed">
+                <h3>🎯 Login exitoso a SAP</h3>
+                <span class="status status-PASSED">PASSED</span>
+
+                <div class="timestamp">
+                    <strong>🕒 Duración REAL:</strong> 0.0 segundos
+                    
+                    
+                </div>
+
+                
+
+                <button class="collapsible" onclick="toggleSteps(this)">📂 Mostrar Detalles de Ejecución</button>
+                <div class="content">
+                    <div class="steps">
+                        <h4>🔍 Pasos Ejecutados (3 pasos):</h4>
+                        
+            <div class="step step-passed">
+                <div class="step-name">✅ que tengo las credenciales válidas</div>
+                <div class="step-duration">0.0s</div>
+                <div class="step-keyword">Given</div>
+
+                <div class="step-details">
+                    <strong>Estado:</strong> PASSED | 
+                    <strong>Duración:</strong> 0.0 segundos
+                    
+                </div>
+
+                
+            </div>
+            
+            <div class="step step-passed">
+                <div class="step-name">✅ inicio sesión en SAP</div>
+                <div class="step-duration">0.0s</div>
+                <div class="step-keyword">When</div>
+
+                <div class="step-details">
+                    <strong>Estado:</strong> PASSED | 
+                    <strong>Duración:</strong> 0.0 segundos
+                    
+                </div>
+
+                
+            </div>
+            
+            <div class="step step-passed">
+                <div class="step-name">✅ debo tener acceso al sistema</div>
+                <div class="step-duration">0.0s</div>
+                <div class="step-keyword">Then</div>
+
+                <div class="step-details">
+                    <strong>Estado:</strong> PASSED | 
+                    <strong>Duración:</strong> 0.0 segundos
+                    
+                </div>
+
+                
+            </div>
+            
+                    </div>
+
+                    <button class="collapsible" onclick="toggleEvidence(this)">🔽 Mostrar Evidencias</button><div class="content" style="display: none;"><h4>📎 Evidencias Recopiladas:</h4><div class="evidence"><strong>Paso 1:</strong> que tengo las credenciales válidas<br>📝 Logs: 2 entradas<br></div><div class="evidence"><strong>Paso 2:</strong> inicio sesión en SAP<br>📝 Logs: 2 entradas<br></div><div class="evidence"><strong>Paso 3:</strong> debo tener acceso al sistema<br>📝 Logs: 2 entradas<br></div></div>
+                </div>
+
+                
+            </div>
+            
+    </div>
+
+    <script>
+        function toggleSteps(button) {
+            var content = button.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                button.textContent = "📂 Mostrar Detalles Completos";
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                button.textContent = "📂 Ocultar Detalles";
+            }
+        }
+
+        function toggleEvidence(button) {
+            var content = button.nextElementSibling;
+            if (content.style.display === 'none' || content.style.display === '') {
+                content.style.display = 'block';
+                button.textContent = '🔼 Ocultar Evidencias';
+            } else {
+                content.style.display = 'none';
+                button.textContent = '🔽 Mostrar Evidencias';
+            }
+        }
+    </script>
+</body>
+</html>

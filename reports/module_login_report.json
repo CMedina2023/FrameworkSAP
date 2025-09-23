@@ -1,0 +1,68 @@
+[
+{
+  "description": [
+    "Como usuario autorizado",
+    "Quiero poder iniciar sesi\u00f3n en SAP",
+    "Para realizar mis operaciones diarias"
+  ],
+  "elements": [
+    {
+      "keyword": "Scenario",
+      "location": "modules/module_login/features/sap_login.feature:6",
+      "name": "Login exitoso a SAP",
+      "status": "passed",
+      "steps": [
+        {
+          "keyword": "Given",
+          "location": "modules/module_login/features/sap_login.feature:7",
+          "match": {
+            "arguments": [],
+            "location": "modules/module_login/steps/sap_steps.py:14"
+          },
+          "name": "que tengo las credenciales v\u00e1lidas",
+          "result": {
+            "duration": 0.0,
+            "status": "passed"
+          },
+          "step_type": "given"
+        },
+        {
+          "keyword": "When",
+          "location": "modules/module_login/features/sap_login.feature:8",
+          "match": {
+            "arguments": [],
+            "location": "modules/module_login/steps/sap_steps.py:39"
+          },
+          "name": "inicio sesi\u00f3n en SAP",
+          "result": {
+            "duration": 20.286550998687744,
+            "status": "passed"
+          },
+          "step_type": "when"
+        },
+        {
+          "keyword": "Then",
+          "location": "modules/module_login/features/sap_login.feature:9",
+          "match": {
+            "arguments": [],
+            "location": "modules/module_login/steps/sap_steps.py:49"
+          },
+          "name": "debo tener acceso al sistema",
+          "result": {
+            "duration": 0.0,
+            "status": "passed"
+          },
+          "step_type": "then"
+        }
+      ],
+      "tags": [],
+      "type": "scenario"
+    }
+  ],
+  "keyword": "Feature",
+  "location": "modules/module_login/features/sap_login.feature:1",
+  "name": "Login a SAP",
+  "status": "passed",
+  "tags": []
+}
+]

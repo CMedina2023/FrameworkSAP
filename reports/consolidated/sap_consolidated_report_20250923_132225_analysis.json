@@ -1,0 +1,109 @@
+{
+  "total": 1,
+  "passed": 1,
+  "failed": 0,
+  "skipped": 0,
+  "total_duration": 0.0,
+  "average_duration": 0.0,
+  "generation_time": "2025-09-23 13:22:25",
+  "execution_environment": {
+    "platform": "Windows-10-10.0.26100-SP0",
+    "python_version": "3.11.1",
+    "timestamp": "2025-09-23T13:22:25.214036",
+    "working_directory": "C:\\Users\\2554184\\PycharmProjects\\pythonProject\\venv\\Scripts\\features\\sap_framework"
+  },
+  "test_cases": [
+    {
+      "name": "Login exitoso a SAP",
+      "description": "",
+      "tags": [],
+      "status": "passed",
+      "duration": 0.0,
+      "steps": [
+        {
+          "name": "que tengo las credenciales válidas",
+          "keyword": "Given",
+          "status": "passed",
+          "duration": 0.0,
+          "error": "",
+          "traceback": "",
+          "start_time": "",
+          "end_time": "",
+          "evidence": {
+            "logs": {
+              "timestamp": "13:22:25",
+              "step_name": "que tengo las credenciales válidas",
+              "log_entries": [
+                "13:22:25 - Executing step: que tengo las credenciales válidas",
+                "13:22:25 - Step status: passed"
+              ]
+            },
+            "data": {
+              "execution_time": "2025-09-23T13:22:25.051915",
+              "step_duration": 9.973049163818358e-13,
+              "parameters": {}
+            }
+          }
+        },
+        {
+          "name": "inicio sesión en SAP",
+          "keyword": "When",
+          "status": "passed",
+          "duration": 0.0,
+          "error": "",
+          "traceback": "",
+          "start_time": "",
+          "end_time": "",
+          "evidence": {
+            "logs": {
+              "timestamp": "13:22:25",
+              "step_name": "inicio sesión en SAP",
+              "log_entries": [
+                "13:22:25 - Executing step: inicio sesión en SAP",
+                "13:22:25 - Step status: passed"
+              ]
+            },
+            "data": {
+              "execution_time": "2025-09-23T13:22:25.052914",
+              "step_duration": 2.043299388885498e-08,
+              "parameters": {}
+            }
+          }
+        },
+        {
+          "name": "debo tener acceso al sistema",
+          "keyword": "Then",
+          "status": "passed",
+          "duration": 0.0,
+          "error": "",
+          "traceback": "",
+          "start_time": "",
+          "end_time": "",
+          "evidence": {
+            "logs": {
+              "timestamp": "13:22:25",
+              "step_name": "debo tener acceso al sistema",
+              "log_entries": [
+                "13:22:25 - Executing step: debo tener acceso al sistema",
+                "13:22:25 - Step status: passed"
+              ]
+            },
+            "data": {
+              "execution_time": "2025-09-23T13:22:25.052914",
+              "step_duration": 0.0,
+              "parameters": {}
+            }
+          }
+        }
+      ],
+      "start_time": null,
+      "end_time": null,
+      "error": "",
+      "evidence_paths": []
+    }
+  ],
+  "total_modules": 1,
+  "successful_modules": 1,
+  "failed_modules": 0,
+  "success_rate": 100.0
+}
