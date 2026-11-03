@@ -80,26 +80,89 @@ class SAPSession:
         if connection is None:
             logger.info(f"[*] Abriendo conexión '{self.config.SAP_CONNECTION}'...")
             connection = application.OpenConnection(self.config.SAP_CONNECTION, True)
-            time.sleep(3)
 
-        if connection is None or connection.Children.Count == 0:
+        # Espera dinámica para que la conexión cree y entregue la sesión SAP
+        timeout = max(self.config.SAP_TIMEOUT, 15)
+        deadline = time.time() + timeout
+        session = None
+
+        logger.info(f"[*] Esperando inicialización de la sesión SAP (hasta {timeout}s)...")
+        while time.time() < deadline:
+            try:
+                if connection and connection.Children.Count > 0:
+                    session = connection.Children(0)
+                    if session:
+                        break
+            except Exception:
+                pass
+            time.sleep(1)
+
+        if connection is None or session is None:
             raise RuntimeError(
-                f"No se pudo abrir la conexión SAP '{self.config.SAP_CONNECTION}'. "
+                f"No se pudo abrir la conexión SAP '{self.config.SAP_CONNECTION}' dentro del tiempo límite ({timeout}s). "
                 "Verifica que SAP_CONNECTION coincida EXACTO con el nombre en SAP Logon."
             )
 
         self._connection = connection
-        session = connection.Children(0)
         self.session = session
 
-        if self._at_logon_screen():
-            self._login()
-        else:
-            logger.info("[*] La sesión ya estaba autenticada; se reutiliza.")
+        # Maximizar ventana para visibilidad clara
+        try:
+            session.findById("wnd[0]").maximize()
+        except Exception:
+            pass
 
-        session.findById("wnd[0]").maximize()
+        # Espera activa y validación de la pantalla de login con mensaje de bienvenida
+        if self._wait_for_login_screen(timeout=timeout):
+            self._login()
+        elif self._is_authenticated():
+            logger.info("[*] La sesión ya estaba autenticada; se reutiliza.")
+        else:
+            logger.info("[*] Sesión iniciada directamente sin pantalla de login previa.")
+
         logger.info("[+] Sesión SAP conectada correctamente.")
         return session
+
+    def _get_welcome_message(self):
+        """Busca y extrae el texto del mensaje de bienvenida de la pantalla de login."""
+        try:
+            usr = self.session.findById("wnd[0]/usr")
+            messages = []
+            for i in range(usr.Children.Count):
+                child = usr.Children(i)
+                text = (getattr(child, "Text", "") or "").strip()
+                if not text:
+                    continue
+                # Identificar palabras clave del mensaje de bienvenida
+                text_lower = text.lower()
+                if any(k in text_lower for k in ["bienvenido", "welcome", "s4hana", "ewm", "preproductivo", "mandante", "mandate"]):
+                    messages.append(text)
+            return " | ".join(messages) if messages else None
+        except Exception:
+            return None
+
+    def _wait_for_login_screen(self, timeout=15):
+        """Espera de forma activa a que aparezca la pantalla de login e identifica el mensaje de bienvenida."""
+        deadline = time.time() + timeout
+        logger.info("[*] Esperando a que cargue la pantalla de login...")
+        while time.time() < deadline:
+            if self._at_logon_screen():
+                welcome_text = self._get_welcome_message()
+                if welcome_text:
+                    logger.info(f"[+] Pantalla de login confirmada. Mensaje de bienvenida: '{welcome_text}'")
+                else:
+                    logger.info("[+] Pantalla de login confirmada (campos de credenciales listos).")
+                return True
+            time.sleep(1)
+        return False
+
+    def _is_authenticated(self):
+        """Verifica si la sesión ya superó el login y se encuentra en el menú principal."""
+        try:
+            self.session.findById(SapLoginIds.OKCODE)
+            return True
+        except Exception:
+            return False
 
     def _at_logon_screen(self):
         try:
@@ -134,6 +197,13 @@ class SAPSession:
             s.findById("wnd[1]").sendVKey(0)
         except Exception:
             pass
+
+        # Esperar confirmación de salida de la pantalla de login
+        deadline = time.time() + 10
+        while time.time() < deadline:
+            if not self._at_logon_screen():
+                break
+            time.sleep(1)
 
         if self._at_logon_screen():
             status = ""
