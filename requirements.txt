@@ -1,0 +1,8 @@
+pytest==8.3.3
+pytest-bdd==7.3.0
+pytest-html==4.1.1
+python-dotenv==1.0.1
+requests==2.32.3
+pywin32>=306
+Pillow>=10.0.0
+reportlab>=4.0.0

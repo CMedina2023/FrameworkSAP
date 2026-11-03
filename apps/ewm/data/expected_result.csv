@@ -1,0 +1,5 @@
+test_id,expected_result
+ACC_ICD_101,Validar que la sesión SAP GUI conecte y responda correctamente con usuario autenticado.
+ACC_ICD_102,Validar el registro exitoso del proceso de Arribo para una Unidad de Transporte (TU) con su cita.
+ACC_ICD_103,Validar la asignación correcta de cortina para una TU mediante la interfaz RFUI.
+ACC_ICD_104,Validar el flujo E2E de Recibo Chocolate incluyendo Arribo, Cortina y Recibo ASN.

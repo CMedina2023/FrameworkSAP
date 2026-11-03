@@ -1,0 +1,7 @@
+class ReciboLocators:
+    TCODE = "/N/SCWM/RFUI"
+    MENU_INPUT = "wnd[0]/usr/subX:/SCWM/SAPLRF_SSCR:0001/txt/SCWM/S_RF_SCRELM-MENU"
+    HU_INPUT = "wnd[0]/usr/subX:SAPLZ_N5_WM_FG_0017_EWM:9030/txtZN5_ST_REASNCONSO-HU"
+    HU_MASTER_INPUT = "wnd[0]/usr/subX:SAPLZ_N5_WM_FG_0017_EWM:9030/txtZN5_ST_REASNCONSO-HU_MASTER"
+    PB1_BUTTON = "wnd[0]/usr/btn/SCWM/S_RF_SCRELM-PB1"
+    STATUS_BAR = "wnd[0]/sbar"

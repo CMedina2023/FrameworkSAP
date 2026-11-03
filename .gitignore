@@ -1,0 +1,29 @@
+# ── Variables de entorno / credenciales ──
+.env
+.env.*
+!.env.example
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ── Pytest ──
+.pytest_cache/
+.cache/
+
+# ── Reportes y evidencias generadas ──
+reports/
+*.log
+logs/
+
+# ── IDE / SO ──
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+.DS_Store
+
