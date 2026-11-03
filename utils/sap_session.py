@@ -55,6 +55,7 @@ class SAPSession:
         while time.time() < deadline:
             try:
                 self._get_sapgui()
+                time.sleep(4)  # Pausa fija para asentar SAP Logon
                 return
             except Exception:
                 time.sleep(1)
@@ -80,40 +81,50 @@ class SAPSession:
         if connection is None:
             logger.info(f"[*] Abriendo conexión '{self.config.SAP_CONNECTION}'...")
             connection = application.OpenConnection(self.config.SAP_CONNECTION, True)
+            logger.info("[*] Esperando pausa de 6 segundos para que SAP cargue la ventana de login...")
+            time.sleep(6)
 
-        # Espera dinámica para que la conexión cree y entregue la sesión SAP
-        timeout = max(self.config.SAP_TIMEOUT, 15)
-        deadline = time.time() + timeout
+        # Buscar la sesión activa en el motor de scripting
         session = None
+        deadline = time.time() + max(self.config.SAP_TIMEOUT, 15)
 
-        logger.info(f"[*] Esperando inicialización de la sesión SAP (hasta {timeout}s)...")
         while time.time() < deadline:
             try:
-                if connection and connection.Children.Count > 0:
-                    session = connection.Children(0)
-                    if session:
-                        break
-            except Exception:
-                pass
-            time.sleep(1)
+                # Re-inspeccionar application.Children por si connection cambió de estado
+                for i in range(application.Children.Count):
+                    con = application.Children(i)
+                    if getattr(con, "Description", "") == self.config.SAP_CONNECTION or con.Children.Count > 0:
+                        connection = con
+                        if con.Children.Count > 0:
+                            session = con.Children(0)
+                            break
+                if session is not None:
+                    break
+            except Exception as e:
+                logger.debug(f"Reintentando acceso a la sesión COM: {e}")
+            time.sleep(2)
 
         if connection is None or session is None:
             raise RuntimeError(
-                f"No se pudo abrir la conexión SAP '{self.config.SAP_CONNECTION}' dentro del tiempo límite ({timeout}s). "
+                f"No se pudo abrir la conexión SAP '{self.config.SAP_CONNECTION}' dentro del tiempo límite. "
                 "Verifica que SAP_CONNECTION coincida EXACTO con el nombre en SAP Logon."
             )
 
         self._connection = connection
         self.session = session
 
+        logger.info("[*] Sesión detectada. Pausa de 2 segundos para estabilizar la ventana...")
+        time.sleep(2)
+
         # Maximizar ventana para visibilidad clara
         try:
             session.findById("wnd[0]").maximize()
+            time.sleep(1)
         except Exception:
             pass
 
         # Espera activa y validación de la pantalla de login con mensaje de bienvenida
-        if self._wait_for_login_screen(timeout=timeout):
+        if self._wait_for_login_screen(timeout=15):
             self._login()
         elif self._is_authenticated():
             logger.info("[*] La sesión ya estaba autenticada; se reutiliza.")
@@ -177,24 +188,40 @@ class SAPSession:
 
         logger.info("[*] Realizando login en SAP...")
         s = self.session
+        time.sleep(2)  # Pausa antes de comenzar a escribir
+
         if self.config.SAP_CLIENT:
             try:
                 s.findById(SapLoginIds.CLIENT).text = self.config.SAP_CLIENT
+                time.sleep(0.5)
             except Exception:
                 pass
+
+        logger.info(f"[*] Escribiendo usuario '{self.config.SAP_USER}'...")
         s.findById(SapLoginIds.USER).text = self.config.SAP_USER
+        time.sleep(0.5)
+
+        logger.info("[*] Escribiendo contraseña...")
         s.findById(SapLoginIds.PASSWORD).text = self.config.SAP_PASS
-        try:
-            s.findById(SapLoginIds.LANGUAGE).text = self.config.SAP_LANGUAGE
-        except Exception:
-            pass
+        time.sleep(0.5)
+
+        if self.config.SAP_LANGUAGE:
+            try:
+                s.findById(SapLoginIds.LANGUAGE).text = self.config.SAP_LANGUAGE
+                time.sleep(0.5)
+            except Exception:
+                pass
+
+        logger.info("[*] Presionando Enter (F8 / sendVKey 0)...")
         s.findById("wnd[0]").sendVKey(0)
-        time.sleep(2)
+        time.sleep(3)  # Pausa tras presionar Enter
 
         # Popup de "logon múltiple": continuar sin cerrar otras sesiones
         try:
             s.findById(SapLoginIds.MULTI_LOGON_CONTINUE).select()
+            time.sleep(1)
             s.findById("wnd[1]").sendVKey(0)
+            time.sleep(2)
         except Exception:
             pass
 
